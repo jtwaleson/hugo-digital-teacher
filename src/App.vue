@@ -1,6 +1,7 @@
 <template>
 
     <div v-if="language === null">
+        <span>We could not detect your language, this might go a bit wrong</span>
         <button @click="language = 'nl'">Nederlands</button>
         <button @click="language = 'en'">English</button>
     </div>
@@ -45,6 +46,7 @@ export default {
             whichTable: null,
             mode: null,
             language: null,
+            navigator: window.navigator,
         }
     },
     methods: {
@@ -56,6 +58,12 @@ export default {
         setMode(mode) {
             this.mode = mode;
             noSleep.enable();
+        },
+    },
+    mounted() {
+        let detectedLanguage = window.navigator.language.toLowerCase().substring(0,2);
+        if (detectedLanguage === 'nl' || detectedLanguage === 'en') {
+            this.language = detectedLanguage;
         }
     },
 }
