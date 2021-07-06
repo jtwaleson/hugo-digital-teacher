@@ -83,7 +83,7 @@ function hearAnswer(language, number) {
             if (text in toIntMapping) {
                 text = toIntMapping[text];
             }
-            if (event.results[0].isFinal || isNumeric(text)) {
+            if (event.results[0].isFinal || isNumeric(text) && parseInt(text) === number) {
                 clearTimeout(pendingTimeout);
                 pendingTimeout = null;
                 recognition.abort();
