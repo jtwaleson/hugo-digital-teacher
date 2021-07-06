@@ -14,6 +14,7 @@ export default {
         table: Number,
         language: String,
     },
+    emits: ['done'],
     data() {
         return {
             running: false,

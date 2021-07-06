@@ -1,6 +1,8 @@
 <template>
     <div v-if="language === 'nl'">De tafel van {{ table }}... </div>
     <div v-else>The table of {{ table }}... </div>
+    <div v-if="language === 'nl'">Nog {{ amountLeft }} te gaan</div>
+    <div v-else>Only {{ amountLeft }} remaining </div>
 </template>
 
 <script>
@@ -14,9 +16,11 @@ export default {
         table: Number,
         language: String,
     },
+    emits: ['done'],
     data() {
         return {
             running: false,
+            amountLeft: 10,
         }
     },
     async mounted() {
@@ -26,6 +30,7 @@ export default {
         await sayText(this.language === 'nl' ? `De tafel van ${this.table}` : `The table of ${this.table}`, this.language);
         await sleep(800);
         for (let i = 1; i <= 10; i++) {
+            this.amountLeft = 11 - i;
             await hearNumber(`${i} ${this.language === 'nl' ? 'keer' : 'times'} ${this.table} is`, i * this.table, this.language);
             await sleep(100);
         }
