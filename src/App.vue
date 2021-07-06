@@ -19,6 +19,9 @@
         <PracticeTable v-if="mode === 'practice'" :language="language" :table="whichTable" @done="reset"/>
         <QuizTable v-if="mode === 'quiz'" :language="language" :table="whichTable" @done="reset"/>
     </div>
+    <div class="footer">
+        <a href="https://github.com/jtwaleson/hugo-digital-teacher" target="_blank">Check my source code on GitHub</a>
+    </div>
 </template>
 
 <script>
@@ -65,5 +68,9 @@ button {
     height: 100px;
     margin: 20px;
     font-size: 24px;
+    user-select:none;
+}
+.footer {
+    margin-top: 300px;
 }
 </style>

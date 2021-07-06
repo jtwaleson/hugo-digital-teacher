@@ -27,7 +27,7 @@ export default {
         await sayText(this.language === 'nl' ? `De tafel van ${this.table}` : `The table of ${this.table}`, this.language);
         await sleep(800);
         for (let i = 1; i <= 10; i++) {
-            await sayText(this.language == `${i} keer ${this.table} is ${i * this.table}`, this.language);
+            await sayText(`${i} ${this.language === 'nl' ? 'keer' : 'times'} ${this.table} is ${i * this.table}`, this.language);
             await sleep(100);
         }
         await sleep(800);
