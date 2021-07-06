@@ -10,9 +10,9 @@
         <button v-for="n in 20" :key="n" @click="whichTable = n">{{ n }}</button>
     </div>
     <div v-else-if="mode === null">
-        <button @click="mode = 'quiz'">Quiz</button>
-        <button @click="mode = 'practice'">{{ language === 'nl' ? 'Oefen' : 'Practice' }}</button>
-        <button @click="mode = 'say'">{{ language === 'nl' ? 'Zeg' : 'Say' }}</button>
+        <button @click="setMode('quiz')">Quiz</button>
+        <button @click="setMode('practice')">{{ language === 'nl' ? 'Oefen' : 'Practice' }}</button>
+        <button @click="setMode('say')">{{ language === 'nl' ? 'Zeg' : 'Say' }}</button>
     </div>
     <div v-else>
         <SayTable v-if="mode === 'say'" :language="language" :table="whichTable" @done="reset"/>
@@ -25,6 +25,10 @@
 import SayTable from "./components/SayTable.vue";
 import PracticeTable from "./components/PracticeTable.vue";
 import QuizTable from "./components/QuizTable.vue";
+import NoSleep from 'nosleep.js';
+
+var noSleep = new NoSleep();
+window.noSleep = noSleep;
 
 export default {
     name: "App",
@@ -44,7 +48,12 @@ export default {
         reset() {
             this.whichTable = null;
             this.mode = null;
+            noSleep.disable();
         },
+        setMode(mode) {
+            this.mode = mode;
+            noSleep.enable();
+        }
     },
 }
 

@@ -70,8 +70,10 @@ const toIntMapping = {
 
 
 function hearAnswer(language, number) {
+
     return new Promise((resolve, reject) => {
         recognition.lang = langToLocaleMap[language];
+        window.noSleep.disable();
         recognition.start();
         let pendingTimeout = setTimeout(() => {
             recognition.stop();
@@ -85,6 +87,7 @@ function hearAnswer(language, number) {
                 clearTimeout(pendingTimeout);
                 pendingTimeout = null;
                 recognition.abort();
+                window.noSleep.enable();
                 return resolve(text);
             }
         }
@@ -93,6 +96,7 @@ function hearAnswer(language, number) {
                 if (pendingTimeout !== null) {
                     clearTimeout(pendingTimeout);
                     pendingTimeout = null;
+                    window.noSleep.enable();
                     resolve(null);
                 }
             }, 500);
