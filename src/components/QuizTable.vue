@@ -1,12 +1,16 @@
 <template>
     <div v-if="language === 'nl'">De tafel van {{ table }}... </div>
     <div v-else>The table of {{ table }}... </div>
+    <div>
+        <p v-for="(message, index) in messages">
+        {{ message }}
+        </p>
+    </div>
 </template>
 
 <script>
 
 import { sayText, hearNumber, sleep, giveCompliment, abortEverything } from '../speechUtil.js';
-
 
 export default {
     name: "QuizTable",
@@ -17,6 +21,7 @@ export default {
     data() {
         return {
             running: false,
+            messages: [],
         }
     },
     async mounted() {

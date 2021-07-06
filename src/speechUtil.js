@@ -14,6 +14,12 @@ const langToLocaleMap = {
     en: 'en-US',
 }
 
+var voices = null;
+
+speechSynthesis.onvoiceschanged = function () {
+    voices = speechSynthesis.getVoices();
+};
+
 
 export function sleep(duration) {
     return new Promise(resolve => setTimeout(resolve, duration));
@@ -26,6 +32,13 @@ export function sayText(text, language) {
     return new Promise((resolve, reject) => {
         let utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = langToLocaleMap[language];
+        if (voices !== null) {
+            for (let voice of voices) {
+                if (voice.lang === langToLocaleMap[language] || voice.lang === langToLocaleMap[language].replace('-', '_')) {
+                    utterance.voice = voice;
+                }
+            }
+        }
         utterance.onend = () => {
             resolve();
         }
@@ -56,26 +69,30 @@ const toIntMapping = {
 }
 
 
-function hearAnswer(language) {
+function hearAnswer(language, number) {
     return new Promise((resolve, reject) => {
         recognition.lang = langToLocaleMap[language];
         recognition.start();
-        let goodResult = false;
+        let pendingTimeout = setTimeout(() => {
+            recognition.stop();
+        }, 11000);
         recognition.onresult = function(event) {
-            console.log(event.results[0][0].transcript);
-            if (event.results[0].isFinal) {
-                goodResult = true;
-                let text = event.results[0][0].transcript.toLowerCase();
-                if (text in toIntMapping) {
-                    text = toIntMapping[text];
-                }
+            let text = event.results[0][0].transcript.toLowerCase();
+            if (text in toIntMapping) {
+                text = toIntMapping[text];
+            }
+            if (event.results[0].isFinal || isNumeric(text)) {
+                clearTimeout(pendingTimeout);
+                pendingTimeout = null;
                 recognition.abort();
-                resolve(text);
+                return resolve(text);
             }
         }
         recognition.onend = function () {
             setTimeout(() => {
-                if (!goodResult) {
+                if (pendingTimeout !== null) {
+                    clearTimeout(pendingTimeout);
+                    pendingTimeout = null;
                     resolve(null);
                 }
             }, 500);
@@ -92,7 +109,7 @@ export async function hearNumber(question, number, language) {
     let answer = null;
     while (answer !== number) {
         await sayText(question, language);
-        let answer = await hearAnswer(language);
+        let answer = await hearAnswer(language, number);
         if (answer === null) {
             await sayText(language === 'nl' ? `Ik hoorde niks.` : `I heard nothing`, language);
         } else if (isNumeric(answer)) {
