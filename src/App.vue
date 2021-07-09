@@ -1,7 +1,7 @@
 <template>
 
     <div v-if="language === null">
-        <span v-if="goodVoices.length === 0">We could not speech synthesis support on this device</span>
+        <span v-if="allVoices.length === 0">We could not speech synthesis support on this device</span>
         <div v-else>
             <h1>Supported voices</h1>
             <button v-for="voice in goodVoices" :key="voice.name" @click="setVoice(voice)">{{ voice.lang }} - {{ voice.name}}</button>
