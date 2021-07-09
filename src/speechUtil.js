@@ -26,7 +26,7 @@ export function sayText(text, language) {
     }
     return new Promise((resolve, reject) => {
         let utterance = new SpeechSynthesisUtterance(text);
-//        utterance.lang = window.voice.lang;//.replace("_", "-");//langToLocaleMap[language];
+        utterance.lang = window.voice.lang.replace("_", "-");//langToLocaleMap[language]; THIS IS NEEDED FOR ANDROID
         utterance.voice = window.voice;
         utterance.onend = () => {
             resolve();
