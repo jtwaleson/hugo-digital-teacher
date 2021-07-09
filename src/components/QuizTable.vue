@@ -1,6 +1,6 @@
 <template>
-    <div v-if="language === 'nl'">De tafel van {{ table }}... </div>
-    <div v-else>The table of {{ table }}... </div>
+    <div v-if="language === 'nl'">De tafel van {{ table }}... <br/>Zeg je antwoorden in het Nederlands.</div>
+    <div v-else>The table of {{ table }}... <br/> Say your answers in English.</div>
     <div v-if="language === 'nl'">Nog {{ amountLeft }} te gaan</div>
     <div v-else>Only {{ amountLeft }} remaining </div>
     <div>

@@ -5,16 +5,16 @@
         <div v-else>
             <h1>Supported voices</h1>
             <button v-for="voice in goodVoices" :key="voice.name" @click="setVoice(voice)">{{ voice.lang }} - {{ voice.name}}</button>
-            <h1>English with foreign accents</h1>
+            <h1>English with foreign accents (try "Say" mode)</h1>
             <button v-for="voice in allVoices" :key="voice.name" @click="setVoice(voice, 'en')">{{ voice.lang }} - {{ voice.name}}</button>
-            <h1>Dutch with foreign accents</h1>
+            <h1>Dutch with foreign accents (try "Say" mode)</h1>
             <button v-for="voice in allVoices" :key="voice.name" @click="setVoice(voice, 'nl')">{{ voice.lang }} - {{ voice.name}}</button>
         </div>
     </div>
     <div v-else-if="whichTable === null">
         <h1 v-if="language === 'nl'">Welke tafel wil je oefenen?</h1>
         <h1 v-else>Which table would you like to practice?</h1>
-        <button v-for="n in 20" :key="n" @click="whichTable = n">{{ n }}</button>
+        <button v-for="n in 10" :key="n" @click="whichTable = n">{{ n }}</button>
     </div>
     <div v-else-if="mode === null">
         <button @click="setMode('quiz')">Quiz</button>
