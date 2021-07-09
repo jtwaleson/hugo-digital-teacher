@@ -85,15 +85,11 @@ export default {
             this.allVoices = [];
             for (let voice of speechSynthesis.getVoices()) {
                 this.allVoices.push(voice);
-                if (voice.lang.indexOf('en-') === 0 || voice.lang.indexOf('nl-') === 0) {
+                if (voice.lang.indexOf('en') === 0 || voice.lang.indexOf('nl') === 0) {
                     this.goodVoices.push(voice);
                 }
             }
         }
-        speechSynthesis.getVoices();
-        setTimeout(() => {
-            speechSynthesis.onvoiceschanged();
-        }, 1000);
     },
 }
 
