@@ -1,9 +1,15 @@
 <template>
 
     <div v-if="language === null">
-        <span>We could not detect your language, this might go a bit wrong</span>
-        <button @click="language = 'nl'">Nederlands</button>
-        <button @click="language = 'en'">English</button>
+        <span v-if="goodVoices.length === 0">We could not speech synthesis support on this device</span>
+        <div v-else>
+            <h1>Supported voices</h1>
+            <button v-for="voice in goodVoices" :key="voice.name" @click="setVoice(voice)">{{ voice.lang }} - {{ voice.name}}</button>
+            <h1>English with foreign accents</h1>
+            <button v-for="voice in allVoices" :key="voice.name" @click="setVoice(voice, 'en')">{{ voice.lang }} - {{ voice.name}}</button>
+            <h1>Dutch with foreign accents</h1>
+            <button v-for="voice in allVoices" :key="voice.name" @click="setVoice(voice, 'nl')">{{ voice.lang }} - {{ voice.name}}</button>
+        </div>
     </div>
     <div v-else-if="whichTable === null">
         <h1 v-if="language === 'nl'">Welke tafel wil je oefenen?</h1>
@@ -22,6 +28,9 @@
     </div>
     <div class="footer">
         <a href="https://github.com/jtwaleson/hugo-digital-teacher" target="_blank">Check my source code on GitHub</a>
+        <br/>
+        <br/>
+        <a href="/">Go Back</a>
     </div>
 </template>
 
@@ -47,6 +56,8 @@ export default {
             mode: null,
             language: null,
             navigator: window.navigator,
+            goodVoices: [],
+            allVoices: [],
         }
     },
     methods: {
@@ -59,12 +70,30 @@ export default {
             this.mode = mode;
             noSleep.enable();
         },
+        setVoice(voice, language) {
+            if (!language) {
+                this.language = voice.lang.substring(0, 2) === 'nl' ? 'nl' : 'en';
+            } else {
+                this.language = language;
+            }
+            window.voice = voice;
+        },
     },
     mounted() {
-        let detectedLanguage = window.navigator.language.toLowerCase().substring(0,2);
-        if (detectedLanguage === 'nl' || detectedLanguage === 'en') {
-            this.language = detectedLanguage;
+        speechSynthesis.onvoiceschanged = () => {
+            this.goodVoices = [];
+            this.allVoices = [];
+            for (let voice of speechSynthesis.getVoices()) {
+                this.allVoices.push(voice);
+                if (voice.lang.indexOf('en-') === 0 || voice.lang.indexOf('nl-') === 0) {
+                    this.goodVoices.push(voice);
+                }
+            }
         }
+//        let detectedLanguage = window.navigator.language.toLowerCase().substring(0,2);
+//        if (detectedLanguage === 'nl' || detectedLanguage === 'en') {
+//            this.language = detectedLanguage;
+//        }
     },
 }
 

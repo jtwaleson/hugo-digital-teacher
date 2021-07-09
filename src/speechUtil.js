@@ -14,13 +14,6 @@ const langToLocaleMap = {
     en: 'en-US',
 }
 
-var voices = null;
-
-speechSynthesis.onvoiceschanged = function () {
-    voices = speechSynthesis.getVoices();
-};
-
-
 export function sleep(duration) {
     return new Promise(resolve => setTimeout(resolve, duration));
 }
@@ -32,13 +25,7 @@ export function sayText(text, language) {
     return new Promise((resolve, reject) => {
         let utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = langToLocaleMap[language];
-        if (voices !== null) {
-            for (let voice of voices) {
-                if (voice.lang === langToLocaleMap[language] || voice.lang === langToLocaleMap[language].replace('-', '_')) {
-                    utterance.voice = voice;
-                }
-            }
-        }
+        utterance.voice = window.voice;
         utterance.onend = () => {
             resolve();
         }
@@ -66,6 +53,52 @@ const toIntMapping = {
     eight: "8",
     nine: "9",
     ten: "10",
+}
+export const numberMapping = {
+    "en": {
+        1: "one",
+        2: "two",
+        3: "three",
+        4: "four",
+        5: "five",
+        6: "six",
+        7: "seven",
+        8: "eight",
+        9: "nine",
+        10: "ten",
+        11: "eleven",
+        12: "twelve",
+        13: "thirteen",
+        14: "fourteen",
+        15: "fifteen",
+        16: "sixteen",
+        17: "seventeen",
+        18: "eighteen",
+        19: "nineteen",
+        20: "twenty",
+    },
+    "nl": {
+        1: "een",
+        2: "twee",
+        3: "drie",
+        4: "vier",
+        5: "vijf",
+        6: "zes",
+        7: "zeven",
+        8: "acht",
+        9: "negen",
+        10: "tien",
+        11: "elf",
+        12: "twaalf",
+        13: "dertien",
+        14: "veertien",
+        15: "vijftien",
+        16: "zestien",
+        17: "zeventien",
+        18: "achtien",
+        19: "negentien",
+        20: "twintig",
+    },
 }
 
 
@@ -151,7 +184,7 @@ export async function throwAnInsult(language) {
             "You've just about got it.",
         ],
     };
-    await sayText(insults[language].sample(), language);
+    await sayText(insults[language === 'nl' ? 'nl' : 'en'].sample(), language);
 }
 export async function giveCompliment(language) {
     let compliments = {
@@ -383,7 +416,7 @@ export async function giveCompliment(language) {
             "I believe in you.",
         ],
     };
-    await sayText(compliments[language].sample(), language);
+    await sayText(compliments[language === 'nl' ? 'nl' : 'en'].sample(), language);
 }
 
 export function abortEverything() {
