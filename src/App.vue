@@ -90,6 +90,7 @@ export default {
                 }
             }
         }
+        speechSynthesis.onvoiceschanged();
 //        let detectedLanguage = window.navigator.language.toLowerCase().substring(0,2);
 //        if (detectedLanguage === 'nl' || detectedLanguage === 'en') {
 //            this.language = detectedLanguage;

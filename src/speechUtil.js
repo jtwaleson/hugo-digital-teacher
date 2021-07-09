@@ -18,6 +18,8 @@ export function sleep(duration) {
     return new Promise(resolve => setTimeout(resolve, duration));
 }
 
+speechSynthesis.getVoices();
+
 export function sayText(text, language) {
     if (!language) {
         throw new Error(`sayText: language is not defined`);
