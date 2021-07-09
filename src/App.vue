@@ -90,6 +90,7 @@ export default {
                 }
             }
         }
+        speechSynthesis.getVoices();
         setTimeout(() => {
             speechSynthesis.onvoiceschanged();
         }, 1000);
