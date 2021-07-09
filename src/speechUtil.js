@@ -26,7 +26,7 @@ export function sayText(text, language) {
     }
     return new Promise((resolve, reject) => {
         let utterance = new SpeechSynthesisUtterance(text);
-//        utterance.lang = langToLocaleMap[language];
+        utterance.lang = window.voice.lang;//langToLocaleMap[language];
         utterance.voice = window.voice;
         utterance.onend = () => {
             resolve();
