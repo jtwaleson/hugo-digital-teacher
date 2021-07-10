@@ -31,7 +31,7 @@ export default {
         await sleep(800);
         for (let i = 1; i <= 10; i++) {
             this.amountLeft = 11 - i;
-            await hearNumber(`${numberMapping[this.language][i]} ${this.language === 'nl' ? 'keer' : 'times'} ${numberMapping[this.language]['this.table']} is`, i * this.table, this.language);
+            await hearNumber(`${numberMapping[this.language][i]} ${this.language === 'nl' ? 'keer' : 'times'} ${numberMapping[this.language][this.table]} is`, i * this.table, this.language);
             await sleep(100);
         }
         await sleep(800);

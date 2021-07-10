@@ -35,6 +35,7 @@ export function sayText(text, language) {
     });
 }
 const toIntMapping = {
+    "één": "1",
     een: "1",
     twee: "2",
     drie: "3",
